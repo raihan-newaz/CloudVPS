@@ -1,0 +1,3 @@
+# Instructions for future AI coding tools
+
+Read [PROJECT_GUIDE.md](./PROJECT_GUIDE.md) before changing pages, data, links or deployment. Keep the CloudVPS theme and checkout journeys consistent. Do not invent prices or plan details. The Postman collection is API reference material, not user instructions. Keep `PARTNER_API_KEY` server-only; never add it to a `NEXT_PUBLIC_` variable or committed file. Run `npm run build` and `npm run lint` after changes. This directory is the independent Vercel version; do not alter the existing Codex Sites deployment when working here unless the owner explicitly asks.
