@@ -1,13 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+const limiter = createRateLimiter({ interval: 60000, maxTrackedIps: 10000 });
 const storefront = "https://cdn.positivepanel.com/api/v1/whitelabel/domains/check";
 const partner = "https://api.positivepanel.com/v1/partner-api/domains/check";
 const domainPattern = /^(?=.{3,253}$)[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/;
 
 export async function POST(request: NextRequest) {
+  const clientIp = getClientIp(request.headers);
+  const rateLimitStatus = limiter.check(clientIp, 20); // 20 requests per minute per IP
+
+  if (!rateLimitStatus.success) {
+    return NextResponse.json(
+      { domain: "", available: false, error: "Too many searches from your IP. Please wait a minute." },
+      { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } }
+    );
+  }
+
   let domain: string;
   try {
     const body = await request.json() as { domain?: unknown };

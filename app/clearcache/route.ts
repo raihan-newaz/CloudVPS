@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag, revalidatePath } from "next/cache";
+import { createRateLimiter, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const limiter = createRateLimiter({ interval: 60000, maxTrackedIps: 5000 });
+
 export async function GET(request: NextRequest) {
+  const clientIp = getClientIp(request.headers);
+  const rateLimitStatus = limiter.check(clientIp, 5); // 5 requests per minute per IP
+
+  if (!rateLimitStatus.success) {
+    return NextResponse.json(
+      { error: "Too many cache clear requests. Please wait a minute." },
+      { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } }
+    );
+  }
+
   try {
     // Purge the catalog fetch cache
     try {
