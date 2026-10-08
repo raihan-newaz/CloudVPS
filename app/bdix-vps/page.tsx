@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { Hind_Siliguri } from "next/font/google";
 import { fetchBdixPlans } from "@/lib/bdix";
 import { BdixPage } from "@/components/bdix-page";
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-hind-siliguri",
+});
 
 export const revalidate = 300;
 export const metadata: Metadata = {
@@ -18,5 +26,5 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const plans = await fetchBdixPlans().catch(() => []);
-  return <BdixPage plans={plans} />;
+  return <div className={hindSiliguri.variable}><BdixPage plans={plans} /></div>;
 }

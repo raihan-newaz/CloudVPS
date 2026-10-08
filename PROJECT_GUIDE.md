@@ -18,6 +18,8 @@ Domain search calls `POST /api/domain-check`. An available domain's **Continue**
 
 ## Visual identity
 
+BDIX Bengali text uses Hind Siliguri via `next/font/google` in `app/bdix-vps/page.tsx`, downloaded during build and self-hosted. Arial remains first for English text; Hind Siliguri supplies Bengali glyphs. Preserve the Bengali font, generous line spacing and route-scoped loading.
+
 Deep navy `#061a3f` / `#071b43`, bright blue `#0877ed`, cyan `#25d5fb`, pale background `#f6f8fc`, white cards, Arial/Helvetica, rounded buttons and cards. Main styles: `app/globals.css`. Shared inner pages: `components/marketing-pages.tsx`. Home page: `components/home-page.tsx`. Assets: `public/cloudvps-logo.png`, `public/favicon.png`, `public/hero-datacenter.webp`. Keep mobile navigation, focus styling, reduced-motion support and semantic search feedback.
 
 ## Deployment
