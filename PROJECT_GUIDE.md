@@ -10,11 +10,17 @@ Package cards show names, monthly prices and specifications without assigning we
 
 Price refresh bookmark: `https://cloudvps.bd/clearcache`. Both `/clearcache` and the existing authenticated `/api/revalidate` call `lib/refresh-pricing.ts`, expire the shared `catalog` and `bdix-catalog` tags, invalidate pricing routes including `/bdix-vps`, and verify fresh main/BDIX API results. Success includes counts and timestamp; API failure is a 502, never a false success. Pages regenerate on their next visit; already-open tabs need reloading. All fetch caches use 300-second revalidation and `/api/catalog` uses a 300-second CDN TTL. The browser link retains its existing rate limiter. Keep it out of customer navigation.
 
+## USA VPS campaign page
+
+`/usa-vps` is the USA location campaign page, linked from the shared VPS dropdown, homepage, VPS overview and both footers. `lib/usa-vps.ts` loads every active USA VPS package from the customer storefront using 300-second caching and the shared `catalog` tag. Show current monthly BDT prices, verified specifications, stock availability and direct product/location configuration URLs; preserve Meta UTM parameters. Do not assign unsupported use cases to specific plans or promise a latency/performance result. The route uses the same navy/cyan identity, responsive package cards and mobile sticky CTA as BDIX.
+
+The shared `/clearcache` and `/api/revalidate` flows refresh/verify USA packages alongside the main catalog and all BDIX plans. Keep the portal configuration link at `https://app.cloudvps.bd/vps/configure?product-id=<id>&billing-cycle=monthly&location-id=<id>`.
+
 This independent copy is for comparing Vercel performance before changing the production domain. Its current planned host is a Vercel preview URL; `https://cloudvps.bd` remains on the existing deployment until the owner moves it. The client portal is `https://app.cloudvps.bd`.
 
 ## Routes and customer flows
 
-Public pages: `/`, `/domain`, `/hosting`, `/vps`, `/ssl`, `/why-us`, `/faq`, `/contact`. Preserve the existing CloudVPS navigation, layout, responsive styles, metadata and brand assets. The header `Client login` opens `https://app.cloudvps.bd/login`.
+Public pages: `/`, `/domain`, `/hosting`, `/vps`, `/bdix-vps`, `/usa-vps`, `/ssl`, `/why-us`, `/faq`, `/contact`. Preserve the existing CloudVPS navigation, layout, responsive styles, metadata and brand assets. The header `Client login` opens `https://app.cloudvps.bd/login`.
 
 Domain search calls `POST /api/domain-check`. An available domain's **Continue** link opens `https://app.cloudvps.bd/order?domain=<encoded-domain>`. Hosting cards open `https://app.cloudvps.bd/hosting/checkout?plan_id=<id>&cycle=monthly`. VPS cards open `https://app.cloudvps.bd/vps/configure?product-id=<id>&billing-cycle=monthly&location-id=<id>`. SSL cards link to app SSL categories. Ordering and account management remain in the app.
 

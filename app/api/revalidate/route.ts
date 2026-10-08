@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       revalidated: true,
-      message: "Latest main catalog and BDIX prices verified. Pricing pages regenerate on their next visit.",
+      message: "Latest main catalog, BDIX and USA VPS prices verified. Pricing pages regenerate on their next visit.",
       ...refreshed,
     }, {
       headers: { "Cache-Control": "no-store" }

@@ -91,10 +91,11 @@ export async function GET(request: NextRequest) {
         <div class="card">
           <div class="icon">⚡</div>
           <h1>Latest prices verified!</h1>
-          <p>Main catalog and all ${refreshed.counts.bdix} BDIX VPS packages have been refreshed. Pricing pages will regenerate on their next visit. Reload any page you already have open.</p>
-          <p>${refreshed.counts.domains} domain prices · ${refreshed.counts.hosting} hosting plans · ${refreshed.counts.bdix} BDIX packages</p>
+          <p>Main catalog and all BDIX and USA VPS packages have been refreshed. Pricing pages will regenerate on their next visit. Reload any page you already have open.</p>
+          <p>${refreshed.counts.domains} domain prices · ${refreshed.counts.hosting} hosting plans · ${refreshed.counts.bdix} BDIX packages · ${refreshed.counts.usa} USA packages</p>
           <a href="/" class="btn">Go to Homepage →</a>
           <a href="/bdix-vps" class="btn" style="margin-top:12px">View BDIX VPS →</a>
+          <a href="/usa-vps" class="btn" style="margin-top:12px">View USA VPS →</a>
           <div class="time">Revalidated at: ${new Date().toLocaleString("en-US", { timeZone: "Asia/Dhaka" })} (BST)</div>
         </div>
       </body>
