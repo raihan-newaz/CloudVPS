@@ -43,8 +43,6 @@ const faqs = [
   ["Operating system কীভাবে বেছে নেব?", "Order now button থেকে client portal-এর configuration page খুলবে। সেখানে ওই package-এর available operating system ও options দেখে নির্বাচন করুন।"],
   ["cPanel, website migration বা server management কি included?", "Control panel license, migration ও server management-এর availability এবং আলাদা খরচ order করার আগে support-এর সঙ্গে নিশ্চিত করুন। Website setup ও maintenance-এর দায়িত্বও আগে ঠিক করে নিন। Account ও service support client portal থেকে নিন।"],
   ["Bandwidth ও IPv4 কত পাব?", "প্রতিটি package card-এ catalog-এর bandwidth allocation ও included IPv4 দেখানো আছে। এগুলো connection speed নয়। Usage policy ও extra IPv4-এর খরচ portal/support থেকে নিশ্চিত করুন।"],
-  ["দাম ও billing কীভাবে কাজ করে?", "এখানে মাসিক customer price দেখানো হয়। Billing cycle, tax, add-ons ও final payable total client portal-এর checkout-এ review করুন। অন্য billing cycle-এর জন্য portal-এর price-ই অনুসরণ করুন।"],
-  ["Backup বা DDoS protection included আছে?", "এই page এগুলো included হিসেবে দেখাচ্ছে না। আপনার প্রয়োজন থাকলে purchase-এর আগে support-এর সঙ্গে availability ও terms নিশ্চিত করুন।"],
 ];
 
 export function BdixPage({ plans }: { plans: BdixPlan[] }) {
