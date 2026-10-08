@@ -11,6 +11,17 @@ This is a separate, self-contained Next.js copy of the CloudVPS marketing site. 
 
 No environment variable is required for the public customer catalog or basic domain search. If you later use the optional extra Partner API availability check, add `PARTNER_API_KEY` in Vercel Project Settings → Environment Variables; do not commit it or expose it as `NEXT_PUBLIC_`.
 
+## Meta Pixel + Conversions API
+
+Add these variables in Vercel Project Settings → Environment Variables, then redeploy:
+
+- `NEXT_PUBLIC_META_PIXEL_ID`: your Meta Dataset/Pixel ID. This ID is public and can be used by the browser Pixel.
+- `META_CAPI_ACCESS_TOKEN`: your dataset access token. Keep it server-only; never prefix it with `NEXT_PUBLIC_` or commit it.
+- `META_CAPI_TEST_EVENT_CODE`: optional. Set it while checking Events Manager Test Events, then remove it for normal production reporting.
+- `META_GRAPH_API_VERSION`: optional; defaults to `v26.0`.
+
+Visitors must allow marketing cookies before Pixel or CAPI tracking starts. The browser and server send `PageView`, `ViewContent` on the BDIX/USA campaign pages, and `InitiateCheckout` when a portal checkout link is clicked; paired events share an `event_id` for deduplication. A completed order happens in `app.cloudvps.bd`, so a real `Purchase` event needs a verified payment/order webhook from that app before it can be tracked accurately.
+
 ## Local checks
 
 Requires Node.js 22.13 or newer.

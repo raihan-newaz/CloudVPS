@@ -2,7 +2,7 @@
 
 ## BDIX campaign page (October 2026)
 
-Production hosting is Vercel. `/bdix-vps` is the bilingual BDIX campaign page, linked from shared VPS navigation, homepage, VPS page and footers. Read `BDIX_MARKETING.md` for campaign copy and UTM examples. Its data loader (`lib/bdix.ts`) fetches all active BDIX plans with 300-second revalidation and the `catalog` tag; it does not use the older catalog's hard-coded fallback or two-plan selection. Preserve direct product/location checkout links, stock restrictions, query forwarding and the navy/cyan identity. No Meta Pixel is configured. The earlier migration notes below describe the original setup.
+Production hosting is Vercel. `/bdix-vps` is the bilingual BDIX campaign page, linked from shared VPS navigation, homepage, VPS page and footers. Read `BDIX_MARKETING.md` for campaign copy and UTM examples. Its data loader (`lib/bdix.ts`) fetches all active BDIX plans with 300-second revalidation and the `catalog` tag; it does not use the older catalog's hard-coded fallback or two-plan selection. Preserve direct product/location checkout links, stock restrictions, query forwarding and the navy/cyan identity. Meta Pixel and CAPI are wired through `components/meta-tracking.tsx` and `app/api/meta/events/route.ts`; both stay inactive until Vercel environment variables are configured and each visitor grants marketing-cookie consent. The earlier migration notes below describe the original setup.
 
 Primary BDIX positioning is website hosting for Bangladeshi visitors: business websites, WordPress, WooCommerce, agency sites and content portals. Local peering can shorten routes and reduce network latency; never turn this into a fixed ping or guaranteed page-load claim. See the research sources in `BDIX_MARKETING.md`. The route illustration is conceptual, not measured network telemetry. Preserve responsive single-column mobile packages, Hind Siliguri and the compact sticky CTA.
 
@@ -27,6 +27,8 @@ Domain search calls `POST /api/domain-check`. An available domain's **Continue**
 ## Data and safety
 
 `GET /api/catalog` retrieves customer prices for selected TLDs and hosting/VPS plans from the public PositivePanel whitelabel storefront using `X-Partner-ID: app.cloudvps.bd`. Vercel can cache successful catalog responses for five minutes. The UI links to the app when prices are unavailable. Never display unverified Namely partner costs as retail prices or hard-code customer prices. Domain availability remains an uncached live check. Optional `PARTNER_API_KEY` stays server-side in Vercel environment variables.
+
+Meta tracking uses `NEXT_PUBLIC_META_PIXEL_ID` (public pixel identifier), `META_CAPI_ACCESS_TOKEN` (server-only secret), optional `META_CAPI_TEST_EVENT_CODE`, and optional `META_GRAPH_API_VERSION`. `/api/meta/events` accepts only allowlisted event names from this origin and requires the marketing-consent cookie. Pixel and CAPI event IDs must remain identical for Meta deduplication. Never emit `Purchase` from a landing-page click; confirmed order integration requires the client portal/payment webhook.
 
 ## Visual identity
 

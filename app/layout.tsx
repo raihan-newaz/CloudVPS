@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { MetaTracking } from "@/components/meta-tracking";
 
 
 
@@ -31,7 +32,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//app.cloudvps.bd" />
         <link rel="preconnect" href="https://app.cloudvps.bd" />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">{children}<MetaTracking/></body>
     </html>
   );
 }
