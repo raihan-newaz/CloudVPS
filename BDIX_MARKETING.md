@@ -34,6 +34,8 @@ Optional Meta template: utm_source={{site_source_name}}&utm_medium=paid_social&u
 
 These five UTM fields carry to package order links. This does not establish purchase attribution: confirm that the client portal records them before reporting purchases by campaign. No Pixel or purchase events are implemented.
 
+Portal integration limitation observed on October 8, 2026: the app reads `product-id`, `billing-cycle` and `location-id`, but its configuration initialization can reset a requested Pro plan to Start. Links supply the documented parameters correctly. Customers are reminded to check the selected plan before checkout. Fixing the app's initialization effects requires its own source project; do not claim automatic plan selection is verified until that bug is resolved.
+
 ## Measurement and claims
 
 Compare the two creative angles using the same campaign conditions. Review landing visits, package clicks (if app analytics records them), and confirmed orders separately. Do not infer purchases from link clicks. Budget and ad launch remain owner decisions.

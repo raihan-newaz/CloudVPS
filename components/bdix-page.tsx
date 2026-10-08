@@ -57,6 +57,7 @@ export function BdixPage({ plans }: { plans: BdixPlan[] }) {
         <ul><li><Check/>{p.cpu} vCPU</li><li><Check/>{p.ram} GB RAM</li><li><Check/>{p.disk} GB NVMe storage</li><li><Check/>{money(p.bandwidth)} GB bandwidth</li><li><Check/>{p.ipv4} IPv4 address{p.ipv4 === 1 ? "" : "es"}</li></ul>
         <div className="bdix-plan-use"><span>ভালো fit হতে পারে</span><p>{useCases[p.id]?.text ?? "আপনার application-এর resource requirements-এর সঙ্গে মিলিয়ে বেছে নিন।"}</p></div>
         {p.available ? <a className={`button ${p.featured ? "button-cyan" : "button-dark"}`} href={campaignUrl(p.url, search)}>এই Plan নিন <ArrowUpRight size={18}/></a> : <button className="button bdix-unavailable" disabled>বর্তমানে unavailable</button>}
+        {p.available && <small className="bdix-selection-note">Portal-এ {p.name} selected আছে কিনা নিশ্চিত করুন।</small>}
       </section>)}</div> : <div className="bdix-fallback" role="status"><h3>এই মুহূর্তে package prices পাওয়া যাচ্ছে না</h3><p>Latest plans দেখতে client portal খুলুন অথবা team-এর সাহায্য নিন।</p><a className="button button-dark" href={campaignUrl(portal + "/vps", search)}>Portal-এ packages দেখুন <ArrowUpRight size={18}/></a></div>}
       <p className="bdix-price-note">Monthly customer prices • Final total, tax ও add-ons checkout-এ নিশ্চিত করুন। Use cases selection guidance; capacity guarantee নয়।</p>
     </div></section>
