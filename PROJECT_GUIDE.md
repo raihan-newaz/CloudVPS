@@ -1,5 +1,9 @@
 # CloudVPS Vercel version — project guide
 
+## BDIX campaign page (October 2026)
+
+Production hosting is Vercel. `/bdix-vps` is the bilingual BDIX campaign page, linked from shared VPS navigation, homepage, VPS page and footers. Read `BDIX_MARKETING.md` for campaign copy and UTM examples. Its data loader (`lib/bdix.ts`) fetches all active BDIX plans with 300-second revalidation and the `catalog` tag; it does not use the older catalog's hard-coded fallback or two-plan selection. Preserve direct product/location checkout links, stock restrictions, query forwarding and the navy/cyan identity. No Meta Pixel is configured. The earlier migration notes below describe the original setup.
+
 This independent copy is for comparing Vercel performance before changing the production domain. Its current planned host is a Vercel preview URL; `https://cloudvps.bd` remains on the existing deployment until the owner moves it. The client portal is `https://app.cloudvps.bd`.
 
 ## Routes and customer flows
