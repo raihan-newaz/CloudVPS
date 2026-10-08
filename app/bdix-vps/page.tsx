@@ -12,12 +12,12 @@ const hindSiliguri = Hind_Siliguri({
 
 export const revalidate = 300;
 export const metadata: Metadata = {
-  title: "BDIX VPS Bangladesh | Business ও Apps-এর জন্য CloudVPS",
-  description: "Bangladesh BDIX VPS packages তুলনা করুন। vCPU, RAM, NVMe, bandwidth ও মাসিক দাম দেখে আপনার website, business software বা app-এর জন্য plan বেছে নিন।",
+  title: "BDIX VPS Hosting Bangladesh | Website Hosting — CloudVPS",
+  description: "বাংলাদেশি visitor-এর জন্য Dhaka location-এ website host করুন। Business website, WordPress ও online shop-এর BDIX VPS monthly plans, RAM, CPU ও NVMe তুলনা করুন।",
   alternates: { canonical: "https://cloudvps.bd/bdix-vps" },
   openGraph: {
-    title: "আপনার Business ও Apps-এর জন্য Bangladesh BDIX VPS",
-    description: "Start থেকে Enterprise—আপনার workload অনুযায়ী BDIX VPS resources বেছে নিন।",
+    title: "বাংলাদেশি visitor-এর জন্য BDIX VPS Hosting",
+    description: "আপনার business website, WordPress ও online shop-এর জন্য Bangladesh location-এ VPS plans তুলনা করুন।",
     url: "https://cloudvps.bd/bdix-vps", siteName: "CloudVPS", type: "website", locale: "bn_BD",
     images: [{ url: "/bdix-og.png", width: 1200, height: 630, alt: "CloudVPS Bangladesh BDIX VPS" }],
   },
