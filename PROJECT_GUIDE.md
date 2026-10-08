@@ -6,6 +6,10 @@ Production hosting is Vercel. `/bdix-vps` is the bilingual BDIX campaign page, l
 
 Primary BDIX positioning is website hosting for Bangladeshi visitors: business websites, WordPress, WooCommerce, agency sites and content portals. Local peering can shorten routes and reduce network latency; never turn this into a fixed ping or guaranteed page-load claim. See the research sources in `BDIX_MARKETING.md`. The route illustration is conceptual, not measured network telemetry. Preserve responsive single-column mobile packages, Hind Siliguri and the compact sticky CTA.
 
+Package cards show names, monthly prices and specifications without assigning website sizes or limiting use cases. General website applications sit in their own section with no plan-ID mapping. Do not restore “এই plan কার জন্য?” or “small website only” positioning.
+
+Price refresh bookmark: `https://cloudvps.bd/clearcache`. Both `/clearcache` and the existing authenticated `/api/revalidate` call `lib/refresh-pricing.ts`, expire the shared `catalog` and `bdix-catalog` tags, invalidate pricing routes including `/bdix-vps`, and verify fresh main/BDIX API results. Success includes counts and timestamp; API failure is a 502, never a false success. Pages regenerate on their next visit; already-open tabs need reloading. All fetch caches use 300-second revalidation and `/api/catalog` uses a 300-second CDN TTL. The browser link retains its existing rate limiter. Keep it out of customer navigation.
+
 This independent copy is for comparing Vercel performance before changing the production domain. Its current planned host is a Vercel preview URL; `https://cloudvps.bd` remains on the existing deployment until the owner moves it. The client portal is `https://app.cloudvps.bd`.
 
 ## Routes and customer flows

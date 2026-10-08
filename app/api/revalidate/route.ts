@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag, revalidatePath } from "next/cache";
+import { refreshPricing } from "@/lib/refresh-pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 const DEFAULT_SECRET = "cloudvps_revalidate_2026";
 
@@ -19,17 +20,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Purge the catalog fetch cache
-    try {
-      revalidateTag("catalog", { expire: 0 });
-    } catch {}
-    // Purge all pre-rendered marketing pages
-    revalidatePath("/", "layout");
+    const refreshed = await refreshPricing();
 
     return NextResponse.json({
       revalidated: true,
-      message: "Catalog and all storefront pages have been revalidated successfully! New prices are now live across all edge servers with 0ms loading time.",
-      timestamp: new Date().toISOString(),
+      message: "Latest main catalog and BDIX prices verified. Pricing pages regenerate on their next visit.",
+      ...refreshed,
     }, {
       headers: { "Cache-Control": "no-store" }
     });
@@ -37,6 +33,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       error: "Revalidation failed",
       details: error instanceof Error ? error.message : String(error),
-    }, { status: 500 });
+    }, { status: 502, headers: { "Cache-Control": "no-store" } });
   }
 }

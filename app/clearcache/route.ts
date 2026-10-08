@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag, revalidatePath } from "next/cache";
+import { refreshPricing } from "@/lib/refresh-pricing";
 import { createRateLimiter, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 const limiter = createRateLimiter({ interval: 60000, maxTrackedIps: 5000 });
 
@@ -19,13 +20,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Purge the catalog fetch cache
-    try {
-      revalidateTag("catalog", { expire: 0 });
-    } catch {}
-
-    // Purge all pre-rendered marketing pages
-    revalidatePath("/", "layout");
+    const refreshed = await refreshPricing();
 
     // Return a clean HTML confirmation page for browser visitors
     const html = `
@@ -34,7 +29,8 @@ export async function GET(request: NextRequest) {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Cache Cleared | CloudVPS</title>
+        <meta name="robots" content="noindex, nofollow" />
+        <title>Prices Refreshed | CloudVPS</title>
         <style>
           body {
             background-color: #030712;
@@ -94,9 +90,11 @@ export async function GET(request: NextRequest) {
       <body>
         <div class="card">
           <div class="icon">⚡</div>
-          <h1>Cache Cleared Successfully!</h1>
-          <p>The price catalog and all static pages have been revalidated. New prices are now live across all servers.</p>
+          <h1>Latest prices verified!</h1>
+          <p>Main catalog and all ${refreshed.counts.bdix} BDIX VPS packages have been refreshed. Pricing pages will regenerate on their next visit. Reload any page you already have open.</p>
+          <p>${refreshed.counts.domains} domain prices · ${refreshed.counts.hosting} hosting plans · ${refreshed.counts.bdix} BDIX packages</p>
           <a href="/" class="btn">Go to Homepage →</a>
+          <a href="/bdix-vps" class="btn" style="margin-top:12px">View BDIX VPS →</a>
           <div class="time">Revalidated at: ${new Date().toLocaleString("en-US", { timeZone: "Asia/Dhaka" })} (BST)</div>
         </div>
       </body>
@@ -112,8 +110,8 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Cache clearance failed", details: error instanceof Error ? error.message : String(error) },
-      { status: 500 }
+      { error: "Price refresh failed. Please retry shortly.", details: error instanceof Error ? error.message : "Latest prices unavailable" },
+      { status: 502, headers: { "Cache-Control": "no-store" } }
     );
   }
 }

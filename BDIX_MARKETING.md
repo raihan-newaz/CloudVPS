@@ -52,4 +52,23 @@ Website load time also depends on application configuration, images, plugins, da
 
 ## Catalog maintenance
 
-All active BDIX plans come from the public customer storefront. Existing catalog cache-clear routes also invalidate the `catalog` tag on BDIX data. API failure uses available cached data; no invented fallback prices. New product IDs need editorial use-case text in components/bdix-page.tsx; unknown IDs get generic guidance.
+All active BDIX plans come from the public customer storefront. Cards show specifications without limiting them to a particular website size or type. Website applications are separate and do not map to plan IDs.
+
+After updating customer prices in the source portal, visit https://cloudvps.bd/clearcache. This single bookmark refreshes main-site prices and the full BDIX catalog. It invalidates both shared tags and pricing pages, then verifies fresh API results before reporting success. The confirmation shows package counts and links to homepage/BDIX. Reload pages already open. Pages regenerate on their next visit; it does not promise simultaneous propagation to every external cache or a zero-millisecond load. Failure returns 502 and a retry message. The existing authenticated API follows the same helper. Both response types use no-store; the public browser link retains its existing request limit.
+
+The automatic fetch refresh interval is 300 seconds. Missing main-catalog data produces an empty fallback with portal links rather than old fixed prices. BDIX has no invented price fallback.
+
+## Owner-supplied reference review (October 8, 2026)
+
+| Reference | Pattern used in CloudVPS regeneration |
+| --- | --- |
+| [BDIXVPS](https://bdixvps.com.bd/) | Audience-focused local positioning, clean direct order cards and separate infrastructure/application sections. The direct fetch timed out; indexed page content was available for review. |
+| [BengalCloud](https://bengalcloud.com/bdix-vps/) | Specs-first pricing followed by detailed infrastructure benefits and OS configuration. |
+| [XeonBD](https://www.xeonbd.com/bdix/bdix-vps/) | Explicit resource allocation, management distinction and optional hosting software. |
+| [Alpha Net](https://www.alpha.net.bd/VPS/Linux/) | Compact CPU/RAM/storage comparison and an independent features section. |
+| [SiteChai](https://sitechai.com/bdix-vps) | Server-control presentation and practical configuration/network FAQs. |
+| [Hosttier](https://hosttier.com/vps-hosting) | Brief resource-focused plan cards, OS information and clear order CTA. |
+| [UmmahHostBD](https://ummahhostbd.com/services/BDIX-VPS) | Local website-hosting benefits plus prominent monthly specifications. |
+| [TOSHOST](https://toshost.com/bdix-managed-vps) | Strong local hero, visual routing explanation and separate use-case content. |
+
+These are layout and messaging references, not CloudVPS product evidence. Do not copy their performance numbers, reviews, uptime promises, discounts, owned-infrastructure claims, management, backup or DDoS inclusions. Resource specifications and prices are CloudVPS's own verified API data. No plan-specific audience labels are used, so customers judge allocation without artificial website-capacity boundaries.

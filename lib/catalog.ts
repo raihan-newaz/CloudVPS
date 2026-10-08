@@ -5,57 +5,8 @@ export type Catalog = { domains: Tld[]; hosting: Plan[]; vps: Plan[] };
 const base = "https://cdn.positivepanel.com/api/v1/whitelabel";
 const sourceHeaders = { "X-Partner-ID": "app.cloudvps.bd", Accept: "application/json" };
 
-export const defaultCatalog: Catalog = {
-  domains: [
-    { extension: ".com.bd", price: 815.1, renewal: 1290.9 },
-    { extension: ".bd", price: 1418.3, renewal: 2025.4 },
-    { extension: ".com", price: 1581.25, renewal: 1666.35 },
-    { extension: ".net", price: 2353.72, renewal: 2353.72 },
-  ],
-  hosting: [
-    {
-      name: "Starter cPanel",
-      price: 395.01,
-      details: ["5 GB storage", "2 websites", "5 email accounts", "Free SSL certificates"],
-      featured: false,
-      url: "https://app.cloudvps.bd/hosting/checkout?plan_id=1&cycle=monthly",
-    },
-    {
-      name: "Standard cPanel",
-      price: 791.01,
-      details: ["10 GB storage", "5 websites", "10 email accounts", "Free SSL certificates"],
-      featured: true,
-      url: "https://app.cloudvps.bd/hosting/checkout?plan_id=2&cycle=monthly",
-    },
-    {
-      name: "Advanced cPanel",
-      price: 1484.01,
-      details: ["20 GB storage", "10 websites", "10 email accounts", "Free SSL certificates"],
-      featured: false,
-      url: "https://app.cloudvps.bd/hosting/checkout?plan_id=3&cycle=monthly",
-    },
-  ],
-  vps: [
-    {
-      name: "BDIX VPS Start",
-      price: 750,
-      details: ["2 vCPU", "2 GB RAM", "25 GB NVMe"],
-      url: "https://app.cloudvps.bd/vps/configure?product-id=1&billing-cycle=monthly&location-id=1",
-    },
-    {
-      name: "BDIX VPS Plus",
-      price: 1540,
-      details: ["2 vCPU", "4 GB RAM", "50 GB NVMe"],
-      url: "https://app.cloudvps.bd/vps/configure?product-id=2&billing-cycle=monthly&location-id=1",
-    },
-    {
-      name: "USA VPS Start",
-      price: 1841.4,
-      details: ["2 vCPU", "2 GB RAM", "50 GB NVMe"],
-      url: "https://app.cloudvps.bd/vps/configure?product-id=6&billing-cycle=monthly&location-id=2",
-    },
-  ],
-};
+// Empty fallback sends visitors to the portal instead of publishing stale fixed prices.
+export const defaultCatalog: Catalog = { domains: [], hosting: [], vps: [] };
 
 type RawPlan = { id: number; location_id?: number; name: string; monthly_price: number | string; disk_mb?: number; cpu_cores?: number; ram_gb?: number; disk_gb?: number; is_featured?: boolean; features?: string[] };
 type RawTld = { extension: string; registration_price?: { total_with_vat?: number }; renewal_price?: { total_with_vat?: number } };
@@ -64,13 +15,13 @@ async function get<T>(path: string): Promise<T> {
   const response = await fetch(base + path, {
     headers: sourceHeaders,
     signal: AbortSignal.timeout(9000),
-    next: { tags: ["catalog"] },
+    next: { revalidate: 300, tags: path === "/vps/categories/bdix-vps" ? ["catalog", "bdix-catalog"] : ["catalog"] },
   });
   if (!response.ok) throw new Error("Customer storefront unavailable");
   return response.json() as Promise<T>;
 }
 
-export async function fetchCatalog(): Promise<Catalog> {
+export async function fetchCatalog({ strict = false }: { strict?: boolean } = {}): Promise<Catalog> {
   try {
     const [tlds, hosting, bdix, usa] = await Promise.all([
       get<RawTld[] | { data: RawTld[] }>("/tlds"),
@@ -106,10 +57,11 @@ export async function fetchCatalog(): Promise<Catalog> {
       }));
 
     if (domains.length !== desired.length || hostCards.length !== 3 || vpsCards.length !== 3) {
-      return defaultCatalog;
+      throw new Error("Incomplete customer price catalog");
     }
     return { domains, hosting: hostCards, vps: vpsCards };
-  } catch {
+  } catch (error) {
+    if (strict) throw error;
     return defaultCatalog;
   }
 }
